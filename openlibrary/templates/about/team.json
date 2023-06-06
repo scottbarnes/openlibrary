@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Drini Cami",
+    "status": "Staff",
+    "role": "",
+    "bio": "",
+    "photo_url": "",
+    "ol_user_url": "",
+    "personal_url": "",
+    "favorite_book_url": ""
+  },
+  {
+    "name": "Jim Champ",
+    "status": "Staff",
+    "role": "",
+    "bio": "",
+    "photo_url": "",
+    "ol_user_url": "",
+    "personal_url": "",
+    "favorite_book_url": ""
+  },
+  {
+    "name": "Mek",
+    "status": "Staff",
+    "role": "Chief of Staff",
+    "bio": "Over 70% of the world lives on less than $10 a day. This means up to 2/3 of our neighbors can't afford all the resources they need to reach their full potential. Because of this, we're letting billions of...",
+    "photo_url": "https://cyber.harvard.edu/sites/default/files/styles/teaser/public/2022-08/berkman-photo.png?h=6cb7e18c&itok=rXzz8t8C",
+    "ol_user_url": "",
+    "personal_url": "https://mek.fyi/",
+    "favorite_book_url": ""
+  },
+  {
+    "name": "Scott Barnes",
+    "status": "",
+    "role": "Staff",
+    "bio": "",
+    "photo_url": "https://avatars.githubusercontent.com/u/26524678?v=4",
+    "ol_user_url": "https://openlibrary.org/people/srb36/",
+    "personal_url": "https://github.com/scottbarnes",
+    "favorite_book_url": "https://openlibrary.org/books/OL22552226M/The_High_Sierra"
+  }
+]

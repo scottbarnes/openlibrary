@@ -12,6 +12,7 @@ import datetime
 import logging
 from time import time
 import math
+from pathlib import Path
 
 import infogami
 
@@ -221,7 +222,13 @@ class team(delegate.page):
     path = '/about/team'
 
     def GET(self):
-        return render_template("about/index.html")
+        with Path('/openlibrary/openlibrary/templates/about/team.json').open(
+            mode='r'
+        ) as f:
+            team_members: list[dict[str, str]] = sorted(
+                json.load(f), key=lambda member: member['name'].split()[-1]
+            )
+            return render_template("about/index.html", team_members=team_members)
 
 
 class teammember(delegate.page):
