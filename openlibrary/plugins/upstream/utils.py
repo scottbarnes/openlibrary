@@ -457,7 +457,7 @@ def get_version(key, revision):
 
 
 @public
-def get_recent_author(doc: "Work") -> "Thing" | None:
+def get_recent_author(doc: "Work") -> Union["Thing", None]:
     versions = get_changes_v1(
         {'key': doc.key, 'limit': 1, "offset": 0}, revision=doc.revision
     )
@@ -482,7 +482,7 @@ def get_locale():
 
 
 @public
-def process_version(v: List | "AddBookChangeset" | "Changeset" | "ListChangeset") -> List | "AddBookChangeset" | "Changeset" | "ListChangeset":
+def process_version(v: Union["List", "AddBookChangeset", "Changeset", "ListChangeset"]) -> Union["List", "AddBookChangeset", "Changeset", "ListChangeset"]:
     """Looks at the version and adds machine_comment required for showing "View MARC" link."""
     comments = [
         "found a matching marc record",
@@ -757,7 +757,7 @@ def get_abbrev_from_full_lang_name(input_lang_name: str, languages=None) -> str:
     return target_abbrev
 
 
-def get_language(lang_or_key: str) -> None | Thing | Nothing: 
+def get_language(lang_or_key: str) -> Union[None, "Thing", "Nothing"]: 
     if isinstance(lang_or_key, str):
         return get_languages().get(lang_or_key)
     else:
@@ -765,7 +765,7 @@ def get_language(lang_or_key: str) -> None | Thing | Nothing:
 
 
 @public
-def get_language_name(lang_or_key: Union[Nothing, str, Thing]) -> Union[Nothing, str]:
+def get_language_name(lang_or_key: Union[Nothing, str, "Thing"]) -> Union[Nothing, str]:
     if isinstance(lang_or_key, str):
         lang = get_language(lang_or_key)
         if not lang:
