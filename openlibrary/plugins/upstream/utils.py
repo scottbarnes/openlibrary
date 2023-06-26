@@ -35,7 +35,7 @@ from infogami.utils import view, delegate, stats
 from infogami.utils.view import render, get_template, public, query_param
 from infogami.utils.macro import macro
 from infogami.utils.context import InfogamiContext, context
-from infogami.infobase.client import Nothing, storify  # Changeset #
+from infogami.infobase.client import Nothing, storify
 
 from openlibrary.core.helpers import commify, parse_datetime, truncate
 from openlibrary.core.middleware import GZipMiddleware
@@ -897,9 +897,6 @@ from openlibrary.plugins.upstream import adapter
 from openlibrary.utils.olcompress import OLCompressor
 from openlibrary.utils import olmemcache
 import memcache
-
-# import openlibrary.core.models
-# import openlibrary.plugins.upstream.models
 
 
 class UpstreamMemcacheClient:
