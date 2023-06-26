@@ -868,8 +868,8 @@ from openlibrary.plugins.upstream import adapter
 from openlibrary.utils.olcompress import OLCompressor
 from openlibrary.utils import olmemcache
 import memcache
-import openlibrary.core.models
-import openlibrary.plugins.upstream.models
+# import openlibrary.core.models
+# import openlibrary.plugins.upstream.models
 
 
 class UpstreamMemcacheClient:
