@@ -1,6 +1,6 @@
 import functools
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Callable, Any
+from typing import TYPE_CHECKING, Any, Callable
 from collections.abc import Iterable, Iterator
 import unicodedata
 
@@ -77,6 +77,9 @@ class LanguageNoMatchError(Exception):
 class MultiDict(MutableMapping):
     """Ordered Dictionary that can store multiple values.
 
+    Must be initialized without an `items` parameter, or `items` must be an
+    iterable of two-value sequences. E.g., items=(('a', 1), ('b', 2))
+
     >>> d = MultiDict()
     >>> d['x'] = 1
     >>> d['x'] = 2
@@ -95,9 +98,11 @@ class MultiDict(MutableMapping):
     [('x', 1), ('x', 2), ('y', 3)]
     >>> list(d.multi_items())
     [('x', [1, 2]), ('y', [3])]
+    >>> d1 = MultiDict(items=(('a', 1), ('b', 2)), a=('x', 10, 11, 12))
+    [('a', [1, ('x', 10, 11, 12)]), ('b', [2])]
     """
 
-    def __init__(self, items: tuple = (), **kw) -> None:
+    def __init__(self, items: Iterable[tuple[Any, Any]] = (), **kw) -> None:
         self._items: list = []
 
         for k, v in items:
@@ -110,7 +115,7 @@ class MultiDict(MutableMapping):
         else:
             raise KeyError(key)
 
-    def __setitem__(self, key: str, value: Storage) -> None:
+    def __setitem__(self, key: str, value: Any) -> None:
         self._items.append((key, value))
 
     def __delitem__(self, key):
@@ -126,19 +131,19 @@ class MultiDict(MutableMapping):
         return [v for k, v in self._items if k == key]
 
     def keys(self):
-        return [k for k, v in self._items]
+        return [k for k, _ in self._items]
 
     # Subclasses of MutableMapping should return a dictionary view object for
     # the values() method, but this implementation returns a list.
     # https://docs.python.org/3/library/stdtypes.html#dict-views
-    def values(self) -> list[Storage | Any]:  # type: ignore[override]
-        return [v for k, v in self._items]
+    def values(self) -> list[Any]:  # type: ignore[override]
+        return [v for _, v in self._items]
 
     def items(self):
         return self._items[:]
 
-    def multi_items(self) -> list[Any | tuple[str, list[Storage]]]:
-        """Returns items as tuple of key and a list of values."""
+    def multi_items(self) -> list[tuple[str, list]]:
+        """Returns items as list of tuples of key and a list of values."""
         items = []
         d: dict = {}
 
