@@ -26,4 +26,31 @@ describe('SelectionManager', () => {
             author: [],
         });
     });
+
+    test('toggleSelected', () => {
+        const sm = new SelectionManager(null, '/search');
+        sm.ile = { $statusImages: { append: jest.fn() } };
+        const el = document.createElement('div');
+        el.classList.add('ile-selectable');
+        sm.getProvider = jest.fn().mockReturnValue({ data: () => 'OL1W' });
+        sm.getType = jest.fn().mockReturnValue({ singular: 'work', image: () => 'image_url' });
+        sm.setElementSelectionAttributes = jest.fn();
+        sm.addSelectedItem = jest.fn();
+        sm.removeSelectedItem = jest.fn();
+        sm.updateToolbar = jest.fn();
+
+        // Test selecting an unselected element
+        el.classList.remove('ile-selected');
+        sm.toggleSelected({ currentTarget: el });
+        expect(sm.setElementSelectionAttributes).toHaveBeenCalledWith(el, true);
+        expect(sm.addSelectedItem).toHaveBeenCalledWith('OL1W');
+        expect(sm.updateToolbar).toHaveBeenCalled();
+
+        // Test selecting a selected element
+        el.classList.add('ile-selected');
+        sm.toggleSelected({ currentTarget: el });
+        expect(sm.setElementSelectionAttributes).toHaveBeenCalledWith(el, false);
+        expect(sm.removeSelectedItem).toHaveBeenCalledWith('OL1W');
+        expect(sm.updateToolbar).toHaveBeenCalled();
+      });
 });
