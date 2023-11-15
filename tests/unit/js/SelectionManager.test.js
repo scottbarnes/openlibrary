@@ -52,5 +52,5 @@ describe('SelectionManager', () => {
         expect(sm.setElementSelectionAttributes).toHaveBeenCalledWith(el, false);
         expect(sm.removeSelectedItem).toHaveBeenCalledWith('OL1W');
         expect(sm.updateToolbar).toHaveBeenCalled();
-      });
+    });
 });
