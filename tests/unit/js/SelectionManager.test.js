@@ -1,5 +1,31 @@
 import SelectionManager from '../../../openlibrary/plugins/openlibrary/js/ile/utils/SelectionManager/SelectionManager.js';
 
+function createTestElementsForToggleSelected() {
+    const listItem = document.createElement('li');
+    listItem.classList.add('searchResultItem', 'ile-selectable');
+
+    const ctaDiv = document.createElement('div');
+    ctaDiv.classList.add('searchResultItemCTA');
+
+    const bookTitle = document.createElement('div');
+    bookTitle.classList.add('booktitle');
+    const bookLink = document.createElement('a');
+    bookLink.href = 'OL12345W'; // Mock href value
+    bookTitle.appendChild(bookLink);
+
+    listItem.appendChild(bookTitle);
+    listItem.appendChild(ctaDiv);
+
+    return { listItem, ctaDiv };
+}
+
+function setupSelectionManager() {
+    const sm = new SelectionManager(null, '/search');
+    sm.ile = { $statusImages: { append: jest.fn() } };
+    sm.selectedItems = { work: [] };
+    sm.updateToolbar = jest.fn();
+    return sm;
+}
 
 describe('SelectionManager', () => {
     afterEach(() => {
@@ -27,30 +53,37 @@ describe('SelectionManager', () => {
         });
     });
 
-    test('toggleSelected', () => {
-        const sm = new SelectionManager(null, '/search');
-        sm.ile = { $statusImages: { append: jest.fn() } };
-        const el = document.createElement('div');
-        el.classList.add('ile-selectable');
-        sm.getProvider = jest.fn().mockReturnValue({ data: () => 'OL1W' });
-        sm.getType = jest.fn().mockReturnValue({ singular: 'work', image: () => 'image_url' });
-        sm.setElementSelectionAttributes = jest.fn();
-        sm.addSelectedItem = jest.fn();
-        sm.removeSelectedItem = jest.fn();
-        sm.updateToolbar = jest.fn();
+    test('toggleSelected - clicking on ctaDiv', () => {
+        const sm = setupSelectionManager();
+        const { listItem, ctaDiv } = createTestElementsForToggleSelected();
 
-        // Test selecting an unselected element
-        el.classList.remove('ile-selected');
-        sm.toggleSelected({ currentTarget: el });
-        expect(sm.setElementSelectionAttributes).toHaveBeenCalledWith(el, true);
-        expect(sm.addSelectedItem).toHaveBeenCalledWith('OL1W');
-        expect(sm.updateToolbar).toHaveBeenCalled();
+        ctaDiv.addEventListener('click', () => {
+            sm.toggleSelected({ target: ctaDiv, currentTarget: listItem });
+        });
 
-        // Test selecting a selected element
-        el.classList.add('ile-selected');
-        sm.toggleSelected({ currentTarget: el });
-        expect(sm.setElementSelectionAttributes).toHaveBeenCalledWith(el, false);
-        expect(sm.removeSelectedItem).toHaveBeenCalledWith('OL1W');
-        expect(sm.updateToolbar).toHaveBeenCalled();
+        expect(listItem.classList.contains('ile-selected')).toBe(false);
+        ctaDiv.click();
+        expect(listItem.classList.contains('ile-selected')).toBe(false);
+        ctaDiv.click();
+        expect(listItem.classList.contains('ile-selected')).toBe(false);
+
+        jest.clearAllMocks();
+    });
+
+    test('toggleSelected - clicking on listItem', () => {
+        const sm = setupSelectionManager();
+        const { listItem } = createTestElementsForToggleSelected();
+
+        listItem.addEventListener('click', () => {
+            sm.toggleSelected({ target: listItem, currentTarget: listItem });
+        });
+
+        expect(listItem.classList.contains('ile-selected')).toBe(false);
+        listItem.click();
+        expect(listItem.classList.contains('ile-selected')).toBe(true);
+        listItem.click();
+        expect(listItem.classList.contains('ile-selected')).toBe(false);
+
+        jest.clearAllMocks();
     });
 });
