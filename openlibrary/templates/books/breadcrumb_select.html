@@ -13,7 +13,7 @@ $def with (mb, selected="books")
     $if mb.is_my_page:
       $ options += [
       $   (_("Loans"), "/account/loans"),
-      $   (_("Loan History"), url_prefix + "/loan-history"),
+      $   (_("Loan History"), "/account/loan-history"),
       $   (_("Notes"), url_prefix + "/books/notes"),
       $   (_("Reviews"), url_prefix + "/books/observations"),
       $   (_("Imports and Exports"), "/account/import")
