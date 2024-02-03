@@ -414,7 +414,9 @@ def get_availability_of_ocaid(ocaid):
     return get_availability('identifier', [ocaid])
 
 
-def get_availability_of_ocaids(ocaids: list[str]) -> dict:
+def get_availability_of_ocaids(
+    ocaids: list[str],
+) -> dict[str, dict[str, str | bool | None]]:
     """
     Retrieves availability based on ocaids/archive.org identifiers
     """
